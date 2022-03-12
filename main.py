@@ -1,38 +1,44 @@
+from art import logo
+
 alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
-# direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n")
-text = input("Type your message:\n").lower()
-shift = int(input("Type the shift number:\n"))
-
-def encrypt(text_input, shift_input):
-  cipher_text = ""
-  for letter in text_input:
-    letterPosition = alphabet.index(letter)
-    arrayNum = letterPosition + shift_input
-    arrayOverflow = arrayNum - len(alphabet)
+def caesar(start_text, shift_amount, cipher_direction):
+  end_text = ""
+  if cipher_direction == "decode":
+    shift_amount *= -1
+  for char in start_text:
     
-    if arrayNum >= len(alphabet):
-      shiftedLetter = alphabet[arrayOverflow]
+    # Checks if character is in the alphabet array
+      #index() gets position of selected value in array
+    if char in alphabet:
+      position = alphabet.index(char)
+      new_position = position + shift_amount   
+      end_text += alphabet[new_position]
     else:
-      shiftedLetter = alphabet[letterPosition + shift_input]
-      
-     
-    cipher_text += shiftedLetter
-  print(f"The encoded text is {cipher_text}")
+      end_text += char
     
-encrypt(text_input=text, shift_input=shift)
-#TODO-1: Create a function called 'encrypt' that takes the 'text' and 'shift' as inputs.
+    
+  print(f"Here's the {cipher_direction}d result: {end_text}")
 
-    #TODO-2: Inside the 'encrypt' function, shift each letter of the 'text' forwards in the alphabet by the shift amount and print the encrypted text.  
-    #e.g. 
-    #plain_text = "hello"
-    #shift = 5
-    #cipher_text = "mjqqt"
-    #print output: "The encoded text is mjqqt"
 
-    ##HINT: How do you get the index of an item in a list:
-    #https://stackoverflow.com/questions/176918/finding-the-index-of-an-item-in-a-list
+# Continue using cipher until user chooses 'No'
+cipher_on = True
 
-    ##🐛Bug alert: What happens if you try to encode the word 'civilization'?🐛
+print(logo)
 
-#TODO-3: Call the encrypt function and pass in the user inputs. You should be able to test the code and encrypt a message. 
+while cipher_on == True:
+  direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n")
+  text = input("Type your message:\n").lower()
+  shift = int(input("Type the shift number:\n"))
+
+  # prevents shift from going out of bounds of array
+  shift = shift % 26
+  caesar(start_text=text, shift_amount=shift, cipher_direction=direction)
+  
+  restart_cipher = input("Do you want to restart cipher?\n").lower()
+  if restart_cipher == "yes":
+    cipher_on = True
+  else:
+    cipher_on = False
+    print("Goodbye")
+  
